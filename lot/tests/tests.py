@@ -2,8 +2,9 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import resolve, reverse
-from .views import home_page, new_question, questions_in_lot, LotListView
-from .models import Lot, Question, Post
+from ..forms import NewQuestionForm
+from ..views import home_page, new_question, questions_in_lot, LotListView
+from ..models import Lot, Question, Post
 
 
 class HomePageTest(TestCase):
@@ -58,6 +59,14 @@ class LotQuestionListTests(TestCase):
         view = resolve('/lots/umbrella-corp/')
         self.assertEquals(view.func, questions_in_lot)
 
+    def test_lot_questions_view_contains_navigation_links(self):
+        kwargs = {'lot_id': 'umbrella-corp'}
+        questions_in_lot_url = reverse('list_questions', kwargs=kwargs)
+        new_question_url = reverse('new_question', kwargs=kwargs)
+
+        response = self.client.get(questions_in_lot_url)
+        self.assertContains(response, f'href="{new_question_url}"')
+
 
 class NewQuestionTests(TestCase):
     def setUp(self):
@@ -102,7 +111,9 @@ class NewQuestionTests(TestCase):
         The expected behavior is to show the form again with validation errors
         """
         response = self.client.post(self.valid_url, {})
+        form = response.context.get('form')
         self.assertEquals(response.status_code, 200)
+        self.assertTrue(form.errors)
 
     def test_new_topic_invalid_post_data_empty_fields(self):
         data = {'subject': '', 'message': ''}
@@ -110,3 +121,8 @@ class NewQuestionTests(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertFalse(Question.objects.exists())
         self.assertFalse(Post.objects.exists())
+
+    def test_contains_form(self):
+        response = self.client.get(self.valid_url)
+        form = response.context.get('form')
+        self.assertIsInstance(form, NewQuestionForm)

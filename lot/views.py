@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView, ListView
 from .forms import NewQuestionForm
-from .models import Lot, Post
+from .models import Lot, Question, Post
 
 """
 urlpatterns = [
@@ -52,3 +52,12 @@ def new_question(request, lot_id):
 def questions_in_lot(request, lot_id):
     lot = get_object_or_404(Lot, slug=lot_id)
     return render(request, 'list_of_questions_in_lot.html', {'lot': lot})
+
+
+def question_comments(request, lot_id, question_pk):
+    question = get_object_or_404(Question, lot__slug=lot_id, pk=question_pk)
+    return render(request, 'comments_on_question.html', {'question': question})
+
+def post_comment(request, lot_id, question_pk):
+    pass
+

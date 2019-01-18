@@ -10,6 +10,10 @@
 {% endblock %}
 
 {% block content %}
+<div class='mb-4'>
+    <a href="{% url 'new_question' lot.slug %}" class="btn btn-primary">New Question</a>
+</div>
+
 <table class="table">
     <thead class="thead-inverse">
         <tr>
@@ -22,11 +26,13 @@
     </thead>
     <tbody>
         {% for question in lot.questions.all %}
-        <td>{{question.subject}}</td>
-        <td>{{question.starter.username}}</td>
-        <td>0</td>
-        <td>0</td>
-        <td>{{question.last_updated}}</td>
+        <tr>
+            <td>{{question.subject}}</td>
+            <td>{{question.starter.username}}</td>
+            <td>0</td>
+            <td>0</td>
+            <td>{{question.last_updated}}</td>
+        </tr>
         {% endfor %}
     </tbody>
 </table>
