@@ -1,5 +1,5 @@
 from django import forms
-from .models import Question
+from .models import Question, Post
 
 
 class NewQuestionForm(forms.ModelForm):
@@ -7,4 +7,10 @@ class NewQuestionForm(forms.ModelForm):
 
     class Meta:
         model = Question
-        fields = ['subject', 'message']
+        fields = ['subject', 'message', ]
+
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['message', ]

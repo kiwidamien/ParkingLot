@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView, ListView
-from .forms import NewQuestionForm
+from .forms import NewQuestionForm, PostForm
 from .models import Lot, Question, Post
 
 """
@@ -58,6 +58,21 @@ def question_comments(request, lot_id, question_pk):
     question = get_object_or_404(Question, lot__slug=lot_id, pk=question_pk)
     return render(request, 'comments_on_question.html', {'question': question})
 
-def post_comment(request, lot_id, question_pk):
-    pass
 
+def post_comment(request, lot_id, question_pk):
+    question = get_object_or_404(Question, lot__slug=lot_id, pk=question_pk)
+    user = User.ojbects.first()
+
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.question = question
+            post.created_by = user
+            post.save()
+            return redirect('question_comments', lot_id=lot_id,
+                            question_pk=question_pk)
+    else:
+        form = PostForm()
+    return render(request, 'post_comment.html', {'question': question, 'form':
+                                                 form})
