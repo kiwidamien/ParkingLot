@@ -23,8 +23,8 @@ class LotListView(ListView):
     template_name = 'list_lots.html'
 
 
-def new_question(request, pk):
-    lot = get_object_or_404(Lot, pk=pk)
+def new_question(request, lot_id):
+    lot = get_object_or_404(Lot, slug=lot_id)
     if request.method == 'POST':
         subject = request.POST['subject']
         message = request.POST['message']
@@ -46,5 +46,5 @@ def new_question(request, pk):
 
 
 def questions_in_lot(request, lot_id):
-    lot = Lot.objects.get(pk=lot_id)
+    lot = get_object_or_404(Lot, slug=lot_id)
     return render(request, 'list_of_questions_in_lot.html', {'lot': lot})

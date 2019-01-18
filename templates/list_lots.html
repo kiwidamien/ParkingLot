@@ -17,8 +17,9 @@
     <tbody>
       {% for lot in lots %}
       <tr>
-        <td>{{lot.name}}
-        <small class="text-muted d-block">{{ lot.description }} in {{lot.location}}</small>
+          <td>
+              <a href="{% url 'list_questions' lot.slug %}">{{lot.group_name}}</a>
+              <small class="text-muted d-block">{{ lot.description }} in {{lot.location}}</small>
         </td>
         <td class="align-middle">0</td>
         <td class="align-middle">0</td>

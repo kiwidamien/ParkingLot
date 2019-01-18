@@ -5,10 +5,29 @@
 {% endblock %}
 
 {% block breadcrumb %}
-  <li class="breadcrumb-item"><a href="{% url 'home' %}">Lots</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'list_lots' %}">Lots</a></li>
   <li class="breadcrumb-item active">{{ lot.group_name }}</li>
 {% endblock %}
 
 {% block content %}
-    <!-- just leaving it empty for now. we will add core here soon. -->
+<table class="table">
+    <thead class="thead-inverse">
+        <tr>
+            <th>Question</th>
+            <th>Starter</th>
+            <th>Replies</th>
+            <th>Views</th>
+            <th>Last update</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for question in lot.questions.all %}
+        <td>{{question.subject}}</td>
+        <td>{{question.starter.username}}</td>
+        <td>0</td>
+        <td>0</td>
+        <td>{{question.last_updated}}</td>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
