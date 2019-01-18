@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView, ListView
-from .models import Lot
+from .forms import NewQuestionForm
+from .models import Lot, Post
 
 """
 urlpatterns = [
@@ -17,6 +18,7 @@ urlpatterns = [
 def home_page(request):
     return render(request, 'homepage.html')
 
+
 class LotListView(ListView):
     model = Lot
     context_object_name = 'lots'
@@ -26,23 +28,25 @@ class LotListView(ListView):
 def new_question(request, lot_id):
     lot = get_object_or_404(Lot, slug=lot_id)
     if request.method == 'POST':
-        subject = request.POST['subject']
-        message = request.POST['message']
-
+        form = NewQuestionForm(request.POST)
         user = User.objects.first()
 
-        question = Question.objects.create(
-            subject=subject, lot=lot, starter=user
-        )
+        if form.is_valid():
+            question = form.save(commit=False)
+            question.lot = lot
+            question.starter = user
+            question.save()
 
-        post = Post.objects.create(
-            message=message,
-            lot=lot,
-            created_by=user
-        )
+            Post.objects.create(
+                message=form.cleaned_data.get('message'),
+                question=question,
+                created_by=user
+            )
 
-        return redirect('list_questions', pk=lot.pk)
-    return render(request, 'new_question.html', {'lot': lot})
+            return redirect('list_questions', lot_id=lot.slug)
+    else:
+        form = NewQuestionForm()
+    return render(request, 'new_question.html', {'lot': lot, 'form': form})
 
 
 def questions_in_lot(request, lot_id):
