@@ -13,6 +13,17 @@ class Lot(models.Model):
         self.slug = slugify(self.group_name)
         super(Lot, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return self.group_name
+
+    def get_comments_count(self):
+        return Post.objects.filter(question__lot=self).count()
+
+    def get_last_comment(self):
+        return (Post.objects.filter(question__lot=self)
+                .order_by('-created_at')
+                .first())
+
 
 class Question(models.Model):
     subject = models.CharField(max_length=255)
@@ -21,6 +32,9 @@ class Question(models.Model):
                             on_delete=models.CASCADE)
     starter = models.ForeignKey(User, related_name='questions',
                                 on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.subject
 
 
 class Post(models.Model):
@@ -33,3 +47,6 @@ class Post(models.Model):
                                    on_delete=models.CASCADE)
     updated_by = models.ForeignKey(User, null=True, related_name='+',
                                    on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.message[:30]

@@ -21,9 +21,27 @@
               <a href="{% url 'list_questions' lot.slug %}">{{lot.group_name}}</a>
               <small class="text-muted d-block">{{ lot.description }} in {{lot.location}}</small>
         </td>
-        <td class="align-middle">0</td>
-        <td class="align-middle">0</td>
-        <td></td>
+        <td class="align-middle">
+            {{ lot.get_comments_count }}
+        </td>
+        <td class="align-middle">
+            {{ lot.questions.count }}
+        </td>
+        <td class="align-middle">
+            {% with post=lot.get_last_comment %}
+            {% if post %}
+            <small>
+                <a href="#">
+                    By {{ post.created_by.username }} at {{post.created_at}}
+                </a>
+            </small>
+            {% else %}
+              <small class="text-muted">
+                  <em>No comments yet</em>
+              </small>
+              {% endif %}
+            {% endwith %}
+        </td>
       </tr>
       {% endfor %}
     </tbody>
