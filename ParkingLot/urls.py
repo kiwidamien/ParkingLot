@@ -20,7 +20,7 @@ from lot import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home_page, name='home'),
-    path('lots/', views.LotListView.as_view(), name='list_lotss'),
+    path('lots/', views.LotListView.as_view(), name='list_lots'),
     path('lots/<slug:lot_id>/', views.QuestionListView,
          name='list_questions'),
 ]
