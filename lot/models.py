@@ -32,6 +32,7 @@ class Question(models.Model):
                             on_delete=models.CASCADE)
     starter = models.ForeignKey(User, related_name='questions',
                                 on_delete=models.CASCADE)
+    views = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.subject

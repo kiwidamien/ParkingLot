@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView, ListView
 from .forms import NewQuestionForm, PostForm
@@ -51,11 +52,18 @@ def new_question(request, lot_id):
 
 def questions_in_lot(request, lot_id):
     lot = get_object_or_404(Lot, slug=lot_id)
-    return render(request, 'list_of_questions_in_lot.html', {'lot': lot})
+    questions = (
+        lot.questions.order_by('-last_updated')
+        .annotate(replies=Count('posts') - 1)
+    )
+    return render(request, 'list_of_questions_in_lot.html', {'lot': lot,
+                                                             'questions': questions})
 
 
 def question_comments(request, lot_id, question_pk):
     question = get_object_or_404(Question, lot__slug=lot_id, pk=question_pk)
+    question.views += 1
+    question.save()
     return render(request, 'comments_on_question.html', {'question': question})
 
 
