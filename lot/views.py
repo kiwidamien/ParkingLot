@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.contrib.auth.models import User
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import CreateView, ListView
 from .models import Lot
-# Create your views here.
+
 """
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -22,6 +23,28 @@ class LotListView(ListView):
     template_name = 'list_lots.html'
 
 
-class QuestionListView(ListView):
-    pass
+def new_question(request, pk):
+    lot = get_object_or_404(Lot, pk=pk)
+    if request.method == 'POST':
+        subject = request.POST['subject']
+        message = request.POST['message']
 
+        user = User.objects.first()
+
+        question = Question.objects.create(
+            subject=subject, lot=lot, starter=user
+        )
+
+        post = Post.objects.create(
+            message=message,
+            lot=lot,
+            created_by=user
+        )
+
+        return redirect('list_questions', pk=lot.pk)
+    return render(request, 'new_question.html', {'lot': lot})
+
+
+def questions_in_lot(request, lot_id):
+    lot = Lot.objects.get(pk=lot_id)
+    return render(request, 'list_of_questions_in_lot.html', {'lot': lot})

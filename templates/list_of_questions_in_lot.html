@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ lot.name }} - {{ block.super }}
+{% endblock %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{% url 'home' %}">Lots</a></li>
+  <li class="breadcrumb-item active">{{ lot.group_name }}</li>
+{% endblock %}
+
+{% block content %}
+    <!-- just leaving it empty for now. we will add core here soon. -->
+{% endblock %}

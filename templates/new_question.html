@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Ask a new question{% endblock %}
+
+{% block breadcrumb %}
+  <li class='breadcrumb-item'>Lots</li>
+  <li class='breadcrumb-item'>{{lot.group_name}}</li>
+  <li class='breadcrumb-item active'>New question</li>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Post</button>
+  </form>
+{% endblock %}

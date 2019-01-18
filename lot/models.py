@@ -1,11 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 
 class Lot(models.Model):
     group_name = models.CharField(max_length=30, unique=True)
     description = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.group_name)
+        super(Lot, self).save(*args, **kwargs)
 
 
 class Question(models.Model):
