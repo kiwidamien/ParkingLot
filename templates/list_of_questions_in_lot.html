@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block breadcrumb %}
-  <li class="breadcrumb-item"><a href="{% url 'list_lots' %}">Lots</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'list_lots' %}">All Parking Lots</a></li>
   <li class="breadcrumb-item active">{{ lot.group_name }}</li>
 {% endblock %}
 
@@ -31,6 +31,8 @@
         <tr>
             <td>
                 <a href="{% url 'question_comments' lot.slug question.pk %}">{{question.subject}}</a>
+                <small class="text-muted
+                d-block">{{question.get_first_post|truncatechars:30 }}</small>
             </td>
             <td>{{question.starter.username}}</td>
             <td>{{ question.replies }}</td>

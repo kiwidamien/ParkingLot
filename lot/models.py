@@ -13,6 +13,8 @@ class Lot(models.Model):
     group_name = models.CharField(max_length=30, unique=True)
     description = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
+    start_date = models.DateTimeField(null=True)
+    end_date = models.DateTimeField(null=True)
     slug = models.SlugField(unique=True)
 
     def save(self, *args, **kwargs):
@@ -47,6 +49,11 @@ class Question(models.Model):
 
     def __str__(self):
         return self.subject
+
+    def get_first_post(self):
+        return (Post.objects.filter(question=self)
+                .order_by('created_at')
+                .first())
 
 
 class Post(models.Model):
