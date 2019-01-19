@@ -86,8 +86,12 @@ class PostListView(ListView):
     template_name = 'comments_on_question.html'
 
     def get_context_data(self, **kwargs):
-        self.question.views += 1
-        self.question.save()
+        session_key = f'viewed_question_{self.question.pk}'
+        if not self.request.session.get(session_key, False):
+            self.question.views += 1
+            self.question.save()
+            self.request.session[session_key] = True
+
         kwargs['question'] = self.question
         return super().get_context_data(**kwargs)
 
