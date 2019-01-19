@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView
+from django.utils import timezone
 from .forms import NewQuestionForm, PostForm
 from .models import Lot, Question, Post
 
@@ -69,7 +70,7 @@ def question_comments(request, lot_id, question_pk):
 
 def post_comment(request, lot_id, question_pk):
     question = get_object_or_404(Question, lot__slug=lot_id, pk=question_pk)
-    user = User.ojbects.first()
+    user = User.objects.first()
 
     if request.method == 'POST':
         form = PostForm(request.POST)
@@ -84,3 +85,19 @@ def post_comment(request, lot_id, question_pk):
         form = PostForm()
     return render(request, 'post_comment.html', {'question': question, 'form':
                                                  form})
+
+
+class PostUpdateView(UpdateView):
+    model = Post
+    fields = ('message', )
+    template_name = 'edit_comment.html'
+    pk_url_kwarg = 'post_pk'
+    context_object_name = 'post'
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.updated_by = self.request.user
+        post.updated_at = timezone.now()
+        post.save()
+        return redirect('question_comments', lot_id=post.question.lot.slug,
+                        question_pk=post.question.pk)

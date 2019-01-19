@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit comment {% endblock %}
+
+{% block breadcrumb %}
+  <li class='breadcrumb-item'><a href="{% url 'list_lots' %}">All Parking lots</a></li>
+  <li class='breadcrumb-item'><a href="{% url 'list_questions' post.question.lot.slug %}">{{ post.question.lot.group_name }} </a></li>
+  <li class='breadcrumb-item'><a href="{% url 'question_comments' post.question.lot.slug post.question.pk %}">{{ post.question.subject }}</a></li>
+  <li class='breadcrumb-item active'>Edit comment</li>
+{% endblock %}
+
+{% block content %}
+  <form method="post" class="mb-4" novalidate>
+    {% csrf_token %}
+    {% include 'includes/form.html' %}
+    <button type="submit" class="btn btn-success">Save changes</button>
+    <a href="{% url 'question_comments' post.question.lot.slug post.question.pk %}" 
+      class = "btn btn-outline-secondary" role="button">Cancel</a>
+  </form>
+{% endblock %}
+

@@ -12,7 +12,7 @@
 
 {% block content %}
   <div class='mb-4'>
-    <a href="#" class="btn btn-primary" role="button">Reply</a>
+      <a href="{% url 'post_comment' question.lot.slug question.pk %}" class="btn btn-primary" role="button">Reply</a>
   </div>
 
   {% for post in question.posts.all %}
@@ -40,7 +40,8 @@
             {{ post.message }}
             <!-- We will want a conditional here eventually -->
             <div class="mt-3">
-              <a href="#" class="btn btn-primary btn-sm" role="button">Edit</a>
+                <a href="{% url 'edit_comment' post.question.lot.slug post.question.pk post.pk %}" 
+                    class="btn btn-primary btn-sm" role="button">Edit</a>
             </div>
             <!-- The conditional will end here -->
           </div>
