@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load humanize %}
+
 {% block title %}
   {{ lot.name }} - {{ block.super }}
 {% endblock %}
@@ -33,7 +35,7 @@
             <td>{{question.starter.username}}</td>
             <td>{{ question.replies }}</td>
             <td>{{ question.views }}</td>
-            <td>{{ question.last_updated }}</td>
+            <td>{{ question.last_updated | naturaltime }}</td>
         </tr>
         {% endfor %}
     </tbody>

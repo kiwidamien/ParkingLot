@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.urls import resolve, reverse
 
 from ..models import Lot, Question, Post
-from ..views import question_comments
+from ..views import PostListView
 
 
 class PostsOnQuestionTests(TestCase):
@@ -27,4 +27,4 @@ class PostsOnQuestionTests(TestCase):
 
     def test_view_function(self):
         view = resolve('/lots/umbrella-corp/questions/1/')
-        self.assertEquals(view.func, question_comments)
+        self.assertEquals(view.func.view_class, PostListView)

@@ -6,16 +6,6 @@ from django.utils import timezone
 from .forms import NewQuestionForm, PostForm
 from .models import Lot, Question, Post
 
-"""
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('/', views.home_page, name='home'),
-    path('/trainings/', views.TrainingListView, name='list_trainings'),
-    path('/trainings/<slug:training_id>/', views.QuestionListView,
-         name='list_questions'),
-]
-"""
-
 
 def home_page(request):
     return render(request, 'homepage.html')
@@ -87,7 +77,32 @@ def questions_in_lot(request, lot_id):
                   {'lot': lot, 'questions': questions})
 
 
+class PostListView(ListView):
+    """
+    This CBV implements the same functionality as the FBV 'question_comments'
+    """
+    model = Post
+    context_object_name = 'posts'
+    template_name = 'comments_on_question.html'
+
+    def get_context_data(self, **kwargs):
+        self.question.views += 1
+        self.question.save()
+        kwargs['question'] = self.question
+        return super().get_context_data(**kwargs)
+
+    def get_queryset(self):
+        self.question = get_object_or_404(Question,
+                                          lot__slug=self.kwargs.get('lot_id'),
+                                          pk=self.kwargs.get('question_pk'))
+        queryset = self.question.posts.order_by('created_at')
+        return queryset
+
+
 def question_comments(request, lot_id, question_pk):
+    """
+    This FBV implements the same view as the CBV PostListView
+    """
     question = get_object_or_404(Question, lot__slug=lot_id, pk=question_pk)
     question.views += 1
     question.save()
@@ -105,6 +120,9 @@ def post_comment(request, lot_id, question_pk):
             post.question = question
             post.created_by = user
             post.save()
+
+            question.last_updated = timezone.now()
+            question.save()
             return redirect('question_comments', lot_id=lot_id,
                             question_pk=question_pk)
     else:
