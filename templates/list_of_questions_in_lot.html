@@ -25,13 +25,13 @@
         </tr>
     </thead>
     <tbody>
-        {% for question in lot.questions.all %}
+        {% for question in questions%}
         <tr>
             <td>
                 <a href="{% url 'question_comments' lot.slug question.pk %}">{{question.subject}}</a>
             </td>
             <td>{{question.starter.username}}</td>
-            <td>0</td>
+            <td>{{ question.replies }}</td>
             <td>{{ question.views }}</td>
             <td>{{ question.last_updated }}</td>
         </tr>

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import resolve, reverse
 from ..forms import NewQuestionForm
-from ..views import home_page, new_question, questions_in_lot, LotListView
+from ..views import home_page, new_question, questions_in_lot, LotListView, QuestionListView
 from ..models import Lot, Question, Post
 
 
@@ -57,7 +57,7 @@ class LotQuestionListTests(TestCase):
 
     def test_lot_questions_url_resolves_list_of_questions_view(self):
         view = resolve('/lots/umbrella-corp/')
-        self.assertEquals(view.func, questions_in_lot)
+        self.assertEquals(view.func.view_class, QuestionListView)
 
     def test_lot_questions_view_contains_navigation_links(self):
         kwargs = {'lot_id': 'umbrella-corp'}

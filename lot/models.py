@@ -1,9 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.html import mark_safe
 from django.utils.text import slugify
+from markdown import markdown
 
 
 class Lot(models.Model):
+    """
+    Represents a group of people (typically at a training) that
+    will want to post questions.
+    """
     group_name = models.CharField(max_length=30, unique=True)
     description = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
@@ -26,6 +32,11 @@ class Lot(models.Model):
 
 
 class Question(models.Model):
+    """
+    Represents an individual question within a training.
+    Note the first message/post actually contains the question,
+    although it is summarized in the subject
+    """
     subject = models.CharField(max_length=255)
     last_updated = models.DateTimeField(auto_now_add=True)
     lot = models.ForeignKey(Lot, related_name='questions',
@@ -39,6 +50,9 @@ class Question(models.Model):
 
 
 class Post(models.Model):
+    """
+    Synonymous with comment.
+    """
     message = models.TextField(max_length=4000)
     question = models.ForeignKey(Question, related_name='posts',
                                  on_delete=models.CASCADE)
@@ -51,3 +65,6 @@ class Post(models.Model):
 
     def __str__(self):
         return self.message[:30]
+
+    def get_message_as_markdown(self):
+        return mark_safe(markdown(self.message, safe_mode='escape'))

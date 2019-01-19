@@ -21,7 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home_page, name='home'),
     path('lots/', views.LotListView.as_view(), name='list_lots'),
-    path('lots/<slug:lot_id>/', views.questions_in_lot,
+    path('lots/<slug:lot_id>/', views.QuestionListView.as_view(),
          name='list_questions'),
     path('lots/<slug:lot_id>/new/', views.new_question, name='new_question'),
     path('lots/<slug:lot_id>/questions/<int:question_pk>/',

@@ -51,14 +51,40 @@ def new_question(request, lot_id):
     return render(request, 'new_question.html', {'lot': lot, 'form': form})
 
 
+class QuestionListView(ListView):
+    """
+    This is the class-based view, which is performs the same function
+    as the function-based view questions_in_lot(...) below
+    """
+    model = Question
+    context_object_name = 'questions'
+    template_name = 'list_of_questions_in_lot.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['lot'] = self.lot
+        return super().get_context_data(**kwargs)
+
+    def get_queryset(self):
+        self.lot = get_object_or_404(Lot, slug=self.kwargs.get('lot_id'))
+        questions = (
+            self.lot.questions
+            .order_by('-last_updated')
+            .annotate(replies=Count('posts') - 1)
+        )
+        return questions
+
+
 def questions_in_lot(request, lot_id):
+    """
+    This function implements the same view as QuestionListView does
+    """
     lot = get_object_or_404(Lot, slug=lot_id)
     questions = (
         lot.questions.order_by('-last_updated')
         .annotate(replies=Count('posts') - 1)
     )
-    return render(request, 'list_of_questions_in_lot.html', {'lot': lot,
-                                                             'questions': questions})
+    return render(request, 'list_of_questions_in_lot.html', 
+                  {'lot': lot, 'questions': questions})
 
 
 def question_comments(request, lot_id, question_pk):
