@@ -41,7 +41,9 @@ class HomePageTest(TestCase):
             'lot_slug': 'not a company'
         }
         response = self.client.post(self.url, data)
-        self.assertEquals(response.status_code, 404)
+        form = response.context.get('form')
+        self.assertEquals(response.status_code, 200)
+        self.assertTrue(form.errors)
 
     def test_error_on_empty_form(self):
         response = self.client.post(self.url, {})

@@ -1,5 +1,6 @@
 from django import forms
-from .models import Question, Post
+from django.utils.text import slugify
+from .models import Question, Post, Lot
 
 
 class NewQuestionForm(forms.ModelForm):
@@ -31,4 +32,9 @@ class FindLotForm(forms.Form):
         the_slug = cleaned_data.get('lot_slug')
         if not the_slug:
             raise forms.ValidationError('Please add a Parking Lot name')
+        the_slug = slugify(the_slug)
+        try:
+            Lot.objects.get(slug=the_slug)
+        except Lot.DoesNotExist:
+            raise forms.ValidationError('That Parking Lot does not exist')
 
