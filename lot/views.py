@@ -55,10 +55,14 @@ def new_question(request, lot_id):
                 question=question,
                 created_name=question.starter_name
             )
-
+            request.session['name'] = question.starter_name
             return redirect('list_questions', lot_id=lot.slug)
     else:
         form = NewQuestionForm()
+        if request.user.username:
+            form.initial['name'] = request.user.username
+        else:
+            form.initial['name'] = request.session.get('name', 'Anonymous')
     return render(request, 'new_question.html', {'lot': lot, 'form': form})
 
 

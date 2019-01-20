@@ -27,8 +27,8 @@
         <tr>
             <th>Question</th>
             <th>Starter</th>
-            <th>Replies</th>
-            <th>Views</th>
+            <th class="text-center">Replies</th>
+            <th class="text-center">Unique User Views</th>
             <th>Last update</th>
         </tr>
     </thead>
@@ -40,9 +40,9 @@
                 <small class="text-muted
                 d-block">{{question.get_first_post|truncatechars:30 }}</small>
             </td>
-            <td>{{question.starter.username}}</td>
-            <td>{{ question.replies }}</td>
-            <td>{{ question.views }}</td>
+            <td>{{question.starter_name}}</td>
+            <td class="text-center">{{ question.replies }}</td>
+            <td class="text-center">{{ question.views }}</td>
             <td>{{ question.last_updated | naturaltime }}</td>
         </tr>
         {% endfor %}

@@ -2,6 +2,8 @@
 
 {% load static %}
 
+{% load tz %}
+
 {% block title %}Post a reply{% endblock %}
 
 {% block stylesheet %}
@@ -16,29 +18,27 @@
 {% endblock %}
 
 {% block content %}
+  {% timezone question.lot.timezone %}
 
-  <form method="post" class="mb-4" novalidate>
-    {% csrf_token %}
-    {% include 'includes/form.html' %}
-    <button type="submit" class="btn btn-success">Post a reply</button>
-  </form>
+  <div class="mb-4">
+      {% include 'includes/single_comment.html' with post=question.get_first_post question=question %}
+  </div>
 
-  {% for post in question.posts.all %}
-    <div class="card mb-2">
-      <div class="card-body p-3">
-        <div class="row mb-3">
-          <div class="col-6">
-            <strong class="text-muted">{{ post.created_by.username }}</strong>
-          </div>
-          <div class="col-6 text-right">
-            <small class="text-muted">{{ post.created_at }}</small>
-          </div>
-        </div>
-        {{ post.get_message_as_markdown }}
-      </div>
-    </div>
+  <div class="mb-4">
+      <h3>Your comment</h3>
+      <form method="post" class="mb-4" novalidate>
+          {% csrf_token %}
+          {% include 'includes/form.html' %}
+          <button type="submit" class="btn btn-success">Post a reply</button>
+      </form>
+  </div>
+
+
+  {% for post in question.posts.all|slice:"1:" %}
+    {% include 'includes/single_comment.html' with post=post question=None %}
   {% endfor %}
 
+  {% endtimezone %}
 {% endblock %}
 
 {% block javascript %}
