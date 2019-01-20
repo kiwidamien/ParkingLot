@@ -26,6 +26,9 @@ class LotListView(ListView):
     context_object_name = 'lots'
     template_name = 'list_lots.html'
 
+    def get_queryset(self):
+        return Lot.objects.all().order_by('-start_date')
+
 
 class NewLotView(CreateView):
     model = Lot

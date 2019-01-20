@@ -22,6 +22,7 @@ class CreateLotForm(forms.ModelForm):
         model = Lot 
         exclude = ['slug']
 
+
 class FindLotForm(forms.Form):
     lot_slug = forms.CharField(max_length=100,
                                widget=forms.TextInput(
