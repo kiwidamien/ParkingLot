@@ -24,8 +24,7 @@ Note: Only the last comment can be edited.<br/><br/>
     <a href="{% url 'post_comment' question.lot.slug question.pk %}" class="btn btn-primary" role="button">Reply</a>
 </div>
 
-
-{% for post in question.posts.all|slice:"1:" %}
+{% for post in posts|slice:"1:" %}
   {% include 'includes/single_comment.html' with post=post question=None%}
 {% endfor %}
 

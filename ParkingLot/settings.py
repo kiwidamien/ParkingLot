@@ -84,6 +84,10 @@ WSGI_APPLICATION = 'ParkingLot.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'parking_lot',
+        'USER': 'damien',
+        'HOST': 'localhost',
+        'PORT': '5432'
     }
 }
 
