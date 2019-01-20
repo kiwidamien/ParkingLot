@@ -2,6 +2,8 @@
 
 {% load static %}
 
+{% load tz %}
+
 {% block title %}{{ question.subject }}{% endblock %}
 
 {% block breadcrumb %}
@@ -11,6 +13,8 @@
 {% endblock %}
 
 {% block content %}
+
+{% timezone question.lot.timezone %}
 
 {% with post=question.get_first_post %}
 <div class="card mb-2 border-dark">
@@ -84,4 +88,7 @@ Note: Only the last comment can be edited.<br/><br/>
 </div>
 {% endfor %}
 
+{% endtimezone %}
+
 {% endblock %}
+

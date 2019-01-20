@@ -13,6 +13,12 @@
 
 {% block content %}
 <div class='mb-4'>
+    {{lot.description}} in {{lot.location}} <br/>
+    ({{lot.start_date}} - {{lot.end_date}}) 
+</div>
+
+
+<div class='mb-4'>
     <a href="{% url 'new_question' lot.slug %}" class="btn btn-primary">New Question</a>
 </div>
 

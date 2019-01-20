@@ -9,8 +9,8 @@
     <thead class="thead inverse">
       <tr>
         <th>Lot</th>
-        <th>Posts</th>
-        <th>Questions</th>
+        <th class='text-center'>Questions</th>
+        <th class='text-center'>Comments</th>
         <th>Last Post</th>
         </tr>
     </thead>
@@ -21,18 +21,18 @@
               <a href="{% url 'list_questions' lot.slug %}">{{lot.group_name}}</a>
               <small class="text-muted d-block">{{ lot.description }} in {{lot.location}}</small>
         </td>
-        <td class="align-middle">
-            {{ lot.get_comments_count }}
-        </td>
-        <td class="align-middle">
+        <td class="text-center align-middle">
             {{ lot.questions.count }}
+        </td>
+        <td class="text-center align-middle">
+            {{ lot.get_comments_count }}
         </td>
         <td class="align-middle">
             {% with post=lot.get_last_comment %}
             {% if post %}
             <small>
                 <a href="#">
-                    By {{ post.created_by.username }} at {{post.created_at}}
+                    By {{ post.created_by.username }} at {{post.created_at}} UTC
                 </a>
             </small>
             {% else %}

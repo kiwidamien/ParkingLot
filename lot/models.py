@@ -3,6 +3,9 @@ from django.contrib.auth.models import User
 from django.utils.html import mark_safe
 from django.utils.text import slugify
 from markdown import markdown
+import pytz
+
+TIMEZONE_CHOICES = [(tz, tz) for tz in pytz.common_timezones]
 
 
 class Lot(models.Model):
@@ -13,9 +16,11 @@ class Lot(models.Model):
     group_name = models.CharField(max_length=30, unique=True)
     description = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
-    start_date = models.DateTimeField(null=True)
-    end_date = models.DateTimeField(null=True)
+    start_date = models.DateField(null=True)
+    end_date = models.DateField(null=True)
     slug = models.SlugField(unique=True)
+    timezone = models.CharField(max_length=100, choices=TIMEZONE_CHOICES,
+                                default='America/Los_Angeles')
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.group_name)
