@@ -56,6 +56,30 @@ The database above comes with
 * A superuser "admin", password "ParkingLot"
 * A pre-built Parking Lot called "acme" (use at the homepage, no login required)
 
+### Built-in accounts
+
+These are test accounts only for use on the demo system.
+
+| Account name | Password | Privileges |
+| --- | --- | --- |
+| admin | ParkingLot | Superuser / admin privileges |
+| damien | ParkingLot | Superuser / admin |
+| voldemort | KillerCat | Staff user (can log into `/admin`) |
+| delenn | OfTheGrey | Registered user |
+
+At the moment, the only way to add or remove users is though the admin site http://127.0.0.1:8000/admin
+
+The users `admin`, `damien` and `voldemort` have the ability to log on to the admin site.
+
+The user `delenn` cannot, but should be able to view parking lots and add new ones.
+
+The only restricted routes (i.e. off limits to non-logged in users) other than the admin panel are
+
+* `/lots/` (i.e. an anonymous user cannot see all training groups)
+* `/lots/new/` (i.e. an anonymous user cannot create new training groups)
+
+Everything else is login agnostic.
+
 ## References
 
 This project was largly based off the open sourced [Django tutorial](https://simpleisbetterthancomplex.com/series/beginners-guide/1.11/) by Vitor Freitas.

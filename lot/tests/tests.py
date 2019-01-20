@@ -7,27 +7,6 @@ from ..views import home_page, new_question, questions_in_lot, LotListView, Ques
 from ..models import Lot, Question, Post
 
 
-class LotListViewTest(TestCase):
-    def setUp(self):
-        self.lot = Lot.objects.create(group_name='Umbrella Co',
-                                      description='ACME Raingear 6',
-                                      location='London, UK')
-        url = reverse('list_lots')
-        self.response = self.client.get(url)
-
-    def test_lot_view_status_code(self):
-        self.assertEquals(self.response.status_code, 200)
-
-    def test_lot_url_resolves_lot_list_view(self):
-        view = resolve('/lots/')
-        self.assertEquals(view.func.view_class, LotListView)
-
-    def test_lot_list_view_contains_link_to_lot_view(self):
-        single_lot_url = reverse('list_questions', kwargs={'lot_id':
-                                                           self.lot.slug})
-        self.assertContains(self.response, f'href="{single_lot_url}"')
-
-
 class LotQuestionListTests(TestCase):
     def setUp(self):
         Lot.objects.create(group_name="Umbrella Corp",

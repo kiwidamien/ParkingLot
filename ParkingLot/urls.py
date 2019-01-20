@@ -15,6 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.contrib.auth import views as auth_views
+
+from accounts import views as account_views
 from lot import views
 
 urlpatterns = [
@@ -31,6 +34,7 @@ urlpatterns = [
          views.post_comment, name='post_comment'),
     path('lots/<slug:lot_id>/questions/<int:question_pk>/post_comment/cbv/',
          views.PostCreateView.as_view(), name='post_comment_cbv'),
-    path('lots/<slug:lot_id>/questions/<int:question_pk>/comments/<int:post_pk>/edit/',
-         views.PostUpdateView.as_view(), name='edit_comment')
+    path('lots/<slug:lot_id>/questions/<int:question_pk>/comments/<int:post_pk>/edit/',  # noqa
+         views.PostUpdateView.as_view(), name='edit_comment'),
+    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
 ]

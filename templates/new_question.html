@@ -3,8 +3,8 @@
 {% block title %}Ask a new question{% endblock %}
 
 {% block breadcrumb %}
-  <li class='breadcrumb-item'>Lots</li>
-  <li class='breadcrumb-item'>{{lot.group_name}}</li>
+  <li class='breadcrumb-item'><a href="{% url 'list_lots' %}">All Parking Lots</a></li>
+  <li class='breadcrumb-item'><a href="{% url 'list_questions' lot.slug %}">{{lot.group_name}}</a></li>
   <li class='breadcrumb-item active'>New question</li>
 {% endblock %}
 
@@ -12,6 +12,6 @@
   <form method="post">
     {% csrf_token %}
     {% include 'includes/form.html' %}
-    <button type="submit" class="btn btn-success">Post</button>
+    <button type="submit" class="btn btn-success">Park Question</button>
   </form>
 {% endblock %}

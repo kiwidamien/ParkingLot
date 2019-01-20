@@ -1,8 +1,10 @@
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView, ListView, UpdateView
 from django.utils import timezone
+from django.utils.decorators import method_decorator
 from django.utils.text import slugify
 from django.urls import reverse_lazy
 from .forms import NewQuestionForm, PostForm, FindLotForm, CreateLotForm
@@ -21,6 +23,7 @@ def home_page(request):
     return render(request, 'homepage.html', {'form': form})
 
 
+@method_decorator(login_required(login_url='/login/'), name='dispatch')
 class LotListView(ListView):
     model = Lot
     context_object_name = 'lots'
@@ -30,6 +33,7 @@ class LotListView(ListView):
         return Lot.objects.all().order_by('-start_date')
 
 
+@method_decorator(login_required(login_url='/login/'), name='dispatch')
 class NewLotView(CreateView):
     model = Lot
     form_class = CreateLotForm
