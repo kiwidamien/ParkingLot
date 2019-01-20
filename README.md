@@ -25,6 +25,7 @@ considered private information, ability to view all "Parking Lots" also requires
 Logins are _not_ required to do the following:
 * View/submit questions in a parking lot
 * View/submit comments or answers to questions
+
 In order for a random user to gain access to a parking lot, it is required that she knows the parking lot's name. Again,
 no causal browsing of lots is allowed!
 
