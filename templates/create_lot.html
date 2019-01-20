@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item active">Create new parking lot</li>
+{% endblock %}
+
+{% block content %}
+  <form method="post" class="mb-4" novalidate>
+    {% csrf_token %}
+    {% include 'includes/form.html' %}
+    <button type="submit" class="btn btn-success">Create Parking Lot</button>
+    <a href="{% url 'list_lots' %}" class="btn btn-secondary" role="button">Cancel</a>
+  </form>
+{% endblock %}

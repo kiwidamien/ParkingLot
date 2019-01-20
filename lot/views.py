@@ -4,7 +4,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView, ListView, UpdateView
 from django.utils import timezone
 from django.utils.text import slugify
-from .forms import NewQuestionForm, PostForm, FindLotForm
+from django.urls import reverse_lazy
+from .forms import NewQuestionForm, PostForm, FindLotForm, CreateLotForm
 from .models import Lot, Question, Post
 
 
@@ -24,6 +25,13 @@ class LotListView(ListView):
     model = Lot
     context_object_name = 'lots'
     template_name = 'list_lots.html'
+
+
+class NewLotView(CreateView):
+    model = Lot
+    form_class = CreateLotForm
+    success_url = reverse_lazy('list_lots')
+    template_name = 'create_lot.html'
 
 
 def new_question(request, lot_id):

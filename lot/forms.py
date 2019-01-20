@@ -17,6 +17,11 @@ class PostForm(forms.ModelForm):
         fields = ['message', ]
 
 
+class CreateLotForm(forms.ModelForm):
+    class Meta:
+        model = Lot 
+        fields = '__all__'
+
 class FindLotForm(forms.Form):
     lot_slug = forms.CharField(max_length=100,
                                widget=forms.TextInput(
@@ -37,4 +42,5 @@ class FindLotForm(forms.Form):
             Lot.objects.get(slug=the_slug)
         except Lot.DoesNotExist:
             raise forms.ValidationError('That Parking Lot does not exist')
+
 

@@ -3,6 +3,7 @@ from django.urls import resolve, reverse
 from ..views import home_page
 from ..models import Lot
 
+
 class HomePageTest(TestCase):
     def setUp(self):
         self.lot = Lot.objects.create(group_name="ACME umbrella co",
