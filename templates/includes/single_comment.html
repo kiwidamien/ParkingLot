@@ -17,7 +17,7 @@
                     {% endif %}
                 </div>
                 <div class="col-12">
-                    <small>Posts: {{ post.created_by.posts.count }}</small>
+                    <small>Posts: {{ post.get_comment_count_by_user_in_lot }}</small>
                 </div>
             </div>
             <div class="col-10">

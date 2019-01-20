@@ -84,3 +84,12 @@ class Post(models.Model):
 
     def get_message_as_markdown(self):
         return mark_safe(markdown(self.message, safe_mode='escape'))
+
+    def get_comment_count_by_user_in_lot(self):
+        """
+        Only count names within the same training
+        """
+        lot = self.question.lot
+        return (Post.objects.filter(question__lot=lot)
+                .filter(created_name=self.created_name)
+                .count())

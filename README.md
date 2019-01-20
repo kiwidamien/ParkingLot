@@ -55,7 +55,9 @@ Server should be up-and-running at http://127.0.0.1:8000
 
 The database above comes with
 * A superuser "admin", password "ParkingLot"
-* A pre-built Parking Lot called "acme" (use at the homepage, no login required)
+* There are two pre-made Parking Lots to play with:
+  * "Acme", accessible either using "acme" on the homepage or via http://127.0.0.1:8000/acme/
+  * "Stones'n'Swords", accessible either using the name on the homepage or via http://127.0.0.1:8000/stonesnswords/
 
 ### Built-in accounts
 
