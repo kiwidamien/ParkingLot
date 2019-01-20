@@ -20,7 +20,7 @@ class PostForm(forms.ModelForm):
 class CreateLotForm(forms.ModelForm):
     class Meta:
         model = Lot 
-        fields = '__all__'
+        exclude = ['slug']
 
 class FindLotForm(forms.Form):
     lot_slug = forms.CharField(max_length=100,
