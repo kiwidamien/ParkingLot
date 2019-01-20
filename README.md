@@ -46,7 +46,7 @@ python manage.py runserver
 On a windows machine, run
 ```bash
 conda env create -f environment.yaml
-source ParkingLot
+activate ParkingLot
 python manage.py runserver
 ```
 
