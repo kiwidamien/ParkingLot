@@ -1,5 +1,29 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Welcome to the Parking Lot</h1>
+<div class="m-4">
+<h1 class="text-center">Welcome to the Parking Lot</h1>
+</div>
+
+<form method="post" novalidate>
+	{% csrf_token %}
+
+	{{ form.non_field_errors }}
+	
+	<div class="col-12">
+		<div class="container">
+			<div class="form-row mb-4 justify-content-center">
+				{{ form.lot_slug }}
+				{% if form.lot_slug.errors %}
+				<div class="invalid-feedback">
+				  {{ form.lot_slug.errors }}
+				</div>
+				{% endif %}
+			</div>
+			<div class="form-row mb-4 justify-content-center">
+				<button type="submit" class="btn btn-primary col-8 rounded">Go to Parking Lot</button>
+			</div>
+		</div>
+	</div>
+</form>
 {% endblock %}

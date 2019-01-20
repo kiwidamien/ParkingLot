@@ -3,12 +3,21 @@ from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView, ListView, UpdateView
 from django.utils import timezone
-from .forms import NewQuestionForm, PostForm
+from django.utils.text import slugify
+from .forms import NewQuestionForm, PostForm, FindLotForm
 from .models import Lot, Question, Post
 
 
 def home_page(request):
-    return render(request, 'homepage.html')
+    if request.method == 'POST':
+        form = FindLotForm(request.POST)
+        if form.is_valid():
+            the_slug = slugify(form.cleaned_data.get('lot_slug'))
+            lot = get_object_or_404(Lot, slug=the_slug)
+            return redirect('list_questions', lot_id=lot.slug)
+    else:
+        form = FindLotForm()
+    return render(request, 'homepage.html', {'form': form})
 
 
 class LotListView(ListView):

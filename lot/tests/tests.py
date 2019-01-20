@@ -7,17 +7,6 @@ from ..views import home_page, new_question, questions_in_lot, LotListView, Ques
 from ..models import Lot, Question, Post
 
 
-class HomePageTest(TestCase):
-    def test_home_view_status_code(self):
-        url = reverse('home')
-        response = self.client.get(url)
-        self.assertEquals(response.status_code, 200)
-
-    def test_home_url_resolves_home_view(self):
-        view = resolve('/')
-        self.assertEquals(view.func, home_page)
-
-
 class LotListViewTest(TestCase):
     def setUp(self):
         self.lot = Lot.objects.create(group_name='Umbrella Co',
