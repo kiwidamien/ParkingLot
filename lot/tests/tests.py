@@ -88,7 +88,8 @@ class NewQuestionTests(TestCase):
     def test_new_topic_valid_post_data(self):
         data = {
             'subject': 'Test title',
-            'message': 'Anything said in Latin sounds profound'
+            'message': 'Anything said in Latin sounds profound',
+            'name': 'Hippotomous Maximus'
         }
         response = self.client.post(self.valid_url, data)
         self.assertTrue(Question.objects.exists())

@@ -47,12 +47,13 @@ def new_question(request, lot_id):
             question = form.save(commit=False)
             question.lot = lot
             question.starter = user
+            question.starter_name = form.cleaned_data.get('name', 'Anonymous')
             question.save()
 
             Post.objects.create(
                 message=form.cleaned_data.get('message'),
                 question=question,
-                created_by=user
+                created_name=question.starter_name
             )
 
             return redirect('list_questions', lot_id=lot.slug)
@@ -135,15 +136,15 @@ def question_comments(request, lot_id, question_pk):
 
 def post_comment(request, lot_id, question_pk):
     question = get_object_or_404(Question, lot__slug=lot_id, pk=question_pk)
-    user = User.objects.first()
 
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
             post.question = question
-            post.created_by = user
+            post.created_name = form.cleaned_data.get('name')
             post.save()
+            request.session['name'] = post.created_name
 
             question.last_updated = timezone.now()
             question.save()
@@ -151,8 +152,52 @@ def post_comment(request, lot_id, question_pk):
                             question_pk=question_pk)
     else:
         form = PostForm()
+        if request.user.username:
+            form.initial['name'] = request.user.username
+        else:
+            form.initial['name'] = request.session.get('name', 'Anonymous')
     return render(request, 'post_comment.html', {'question': question, 'form':
                                                  form})
+
+
+class PostCreateView(CreateView):
+    """
+    Implements same stuff as post_comment above.
+    Keeping this because the documentation on adding an
+    extra field (to dispatch) was a pain to dig up
+    """
+    model = Post
+    form_class = PostForm
+    template_name = 'post_comment.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        """
+        Overridden so we know that any other calls have access to
+        the question object (whether rendering or validating)
+
+        See
+          * https://codereview.stackexchange.com/questions/164147/createview-set-foreign-key-from-url-parameter
+          * https://docs.djangoproject.com/en/2.1/topics/class-based-views/intro/
+        Note the StackExchange link is way clearer about what dispatch is doing than
+        the django docs.
+        """  # noqa
+        self.question = get_object_or_404(Question, lot__slug=kwargs['lot_id'],
+                                          pk=kwargs['question_pk'])
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(PostCreateView, self).get_context_data(**kwargs)
+        context['question'] = self.question
+        return context
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.question = self.question
+        post.created_name = form.cleaned_data.get('name')
+        self.request.session['name'] = post.created_name
+        post.save()
+        return redirect('question_comments', lot_id=post.question.lot.slug,
+                        question_pk=post.question.pk)
 
 
 class PostUpdateView(UpdateView):
@@ -164,7 +209,8 @@ class PostUpdateView(UpdateView):
 
     def form_valid(self, form):
         post = form.save(commit=False)
-        post.updated_by = self.request.user
+        print(self.request.user)
+        # post.updated_by = self.request.user
         post.updated_at = timezone.now()
         post.save()
         return redirect('question_comments', lot_id=post.question.lot.slug,

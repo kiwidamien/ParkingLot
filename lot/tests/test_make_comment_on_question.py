@@ -45,6 +45,6 @@ class PostCommentTests(ReplyTopicTestCase):
         """
         The view contains two inputs: csrf, message textarea
         """
-        self.assertContains(self.response, '<input', 1)
+        self.assertContains(self.response, '<input', 2)
         self.assertContains(self.response, '<textarea', 1)
 

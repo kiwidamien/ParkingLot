@@ -50,6 +50,7 @@ class Question(models.Model):
                             on_delete=models.CASCADE)
     starter = models.ForeignKey(User, related_name='questions',
                                 on_delete=models.CASCADE)
+    starter_name = models.CharField(max_length=100, default='Anonymous')
     views = models.PositiveIntegerField(default=0)
 
     def __str__(self):
@@ -70,10 +71,13 @@ class Post(models.Model):
                                  on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True)
-    created_by = models.ForeignKey(User, related_name='posts',
+    created_by = models.ForeignKey(User, null=True, related_name='posts',
                                    on_delete=models.CASCADE)
     updated_by = models.ForeignKey(User, null=True, related_name='+',
                                    on_delete=models.CASCADE)
+
+    created_name = models.CharField(max_length=100)
+    updated_name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.message[:30]

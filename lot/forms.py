@@ -5,16 +5,19 @@ from .models import Question, Post, Lot
 
 class NewQuestionForm(forms.ModelForm):
     message = forms.CharField(widget=forms.Textarea(), max_length=4000)
+    name = forms.CharField(max_length=100)
 
     class Meta:
         model = Question
-        fields = ['subject', 'message', ]
+        fields = ['subject', 'name', 'message', ]
 
 
 class PostForm(forms.ModelForm):
+    name = forms.CharField(max_length=100)
+
     class Meta:
         model = Post
-        fields = ['message', ]
+        fields = ['name', 'message', ]
 
 
 class CreateLotForm(forms.ModelForm):
