@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block breadcrumb %}
-  <li class="breadcrumb-item"><a href="{% url 'list_lots' %}">All Parking Lots</a></li>
+  {% include 'includes/parklot_breadcrumb.html' %}
   <li class="breadcrumb-item"><a href="{% url 'list_questions' question.lot.slug %}">{{ question.lot.group_name }}</a></li>
   <li class="breadcrumb-item"><a href="{% url 'question_comments' question.lot.slug question.pk %}">{{ question.subject }}</a></li>
   <li class="breadcrumb-item active">Post a reply</li>

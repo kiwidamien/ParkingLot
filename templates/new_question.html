@@ -3,7 +3,7 @@
 {% block title %}Ask a new question{% endblock %}
 
 {% block breadcrumb %}
-  <li class='breadcrumb-item'><a href="{% url 'list_lots' %}">All Parking Lots</a></li>
+  {% include 'includes/parklot_breadcrumb.html' %}
   <li class='breadcrumb-item'><a href="{% url 'list_questions' lot.slug %}">{{lot.group_name}}</a></li>
   <li class='breadcrumb-item active'>New question</li>
 {% endblock %}

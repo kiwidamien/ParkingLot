@@ -1,0 +1,7 @@
+<li class="breadcrumb-item">
+  {% if user.username %}
+    <a href="{% url 'list_lots' %}">All Parking Lots</a>
+  {% else %}
+    All Parking Lots
+  {% endif %}
+</li>
