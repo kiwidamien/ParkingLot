@@ -9,6 +9,8 @@ class HomePageTest(TestCase):
                                       description="Intro to data science",
                                       location="New York, New York")
         self.url = reverse('home')
+        reverse_kwargs = {'lot_id': 'acme-umbrella-co'}
+        self.redirect_url = reverse('list_questions', kwargs=reverse_kwargs)
 
     def test_home_view_status_code(self):
         response = self.client.get(self.url)
@@ -27,14 +29,14 @@ class HomePageTest(TestCase):
             'lot_slug': 'acme-umbrella-co',
         }
         response = self.client.post(self.url, data)
-        self.assertEquals(response.status_code, 302)
+        self.assertRedirects(response, self.redirect_url)
 
     def test_redirect_to_parking_lot_wrong_spaces_and_caps(self):
         data = {
             'lot_slug': 'ACME Umbrella Co'
         }
         response = self.client.post(self.url, data)
-        self.assertEquals(response.status_code, 302)
+        self.assertRedirects(response, self.redirect_url)
 
     def test_redirect_fails_to_wrong_lot_slug(self):
         data = {
