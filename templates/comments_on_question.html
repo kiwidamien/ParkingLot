@@ -25,7 +25,7 @@ Note: Only the last comment can be edited.<br/><br/>
 </div>
 
 
-{% for post in question.posts.all|slice:"1:" %}
+{% for post in posts|slice:"1:" %}
   {% include 'includes/single_comment.html' with post=post question=None%}
 {% endfor %}
 
