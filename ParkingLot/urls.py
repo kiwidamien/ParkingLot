@@ -27,6 +27,8 @@ urlpatterns = [
     path('lots/new/', views.NewLotView.as_view(), name='create_lot'),
     path('lots/<slug:lot_id>/', views.QuestionListView.as_view(),
          name='list_questions'),
+    path('lots/<slug:lot_id>/edit/', views.UpdateLotView.as_view(),
+         name='lot_update'),
     path('lots/<slug:lot_id>/new/', views.new_question, name='new_question'),
     path('lots/<slug:lot_id>/questions/<int:question_pk>/',
          views.PostListView.as_view(), name='question_comments'),

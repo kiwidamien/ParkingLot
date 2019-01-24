@@ -16,6 +16,7 @@
         <th class='text-center'>Questions</th>
         <th class='text-center'>Comments</th>
         <th>Last Post</th>
+        <th></th>
         </tr>
     </thead>
     <tbody>
@@ -46,9 +47,11 @@
               {% endif %}
             {% endwith %}
         </td>
+        <td>
+          <a href="{% url 'lot_update' lot.slug %}" class="btn btn-primary">Edit</a>
+        </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 {% endblock %}
-

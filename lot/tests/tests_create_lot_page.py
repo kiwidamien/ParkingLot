@@ -73,3 +73,17 @@ class LoginRequiredCreateNewLotViewTest(CreateNewLotViewBase):
         response = self.client.get(self.url)
         login_url = reverse('login')
         self.assertRedirects(response, f'{login_url}?next={self.url}')
+
+
+class LoginRequiredEditNewLotViewTest(CreateNewLotViewBase):
+    def setUp(self):
+        super().setUp()
+        Lot.objects.create(group_name='acme company',
+                           description='we love umbrellas',
+                           location='London, UK')
+
+    def test_redirect(self):
+        url = reverse('lot_update', kwargs={'lot_id': 'acme-company'})
+        login_url = reverse('login')
+        response = self.client.get(url)
+        self.assertRedirects(response, f'{login_url}?next={url}')
