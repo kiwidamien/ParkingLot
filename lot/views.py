@@ -40,6 +40,26 @@ class NewLotView(CreateView):
     success_url = reverse_lazy('list_lots')
     template_name = 'create_lot.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['operation'] = 'Create'
+        return context
+
+
+@method_decorator(login_required(login_url='/login/'), name='dispatch')
+class UpdateLotView(UpdateView):
+    model = Lot
+    form_class = CreateLotForm
+    success_url = reverse_lazy('list_lots')
+    slug_url_kwarg = 'lot_id'
+    context_object_name = 'lot'
+    template_name = 'create_lot.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['operation'] = 'Edit'
+        return context
+
 
 def new_question(request, lot_id):
     lot = get_object_or_404(Lot, slug=lot_id)
